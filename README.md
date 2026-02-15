@@ -59,6 +59,7 @@
 |------|------|------|
 | 27 | async/await 入门 | [查看](lessons/27-async-await.md) |
 | 28 | Tokio 运行时 | [查看](lessons/28-tokio.md) |
+| 29 | Axum Web 框架入门 | [查看](lessons/29-axum.md) |
 
 ---
 
