@@ -66,6 +66,7 @@
 | 课程 | 主题 | 链接 |
 |------|------|------|
 | 31 | 错误处理最佳实践 (anyhow/thiserror) | [查看](lessons/31-anyhow-thiserror.md) |
+| 32 | Serde 序列化与反序列化 | [查看](lessons/32-serde.md) |
 
 ---
 
