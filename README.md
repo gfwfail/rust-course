@@ -76,6 +76,11 @@
 | 35 | 宏 (Macros) 入门 | [查看](lessons/35-macros.md) |
 | 36 | 过程宏 (Procedural Macros) | [查看](lessons/36-proc-macros.md) |
 
+### 进阶篇
+| 课程 | 主题 | 链接 |
+|------|------|------|
+| 37 | Unsafe Rust | [查看](lessons/37-unsafe.md) |
+
 ---
 
 ## 🎯 学习路线
