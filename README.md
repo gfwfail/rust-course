@@ -95,6 +95,7 @@
 | 42 | 配置管理 (config crate) | [查看](lessons/42-config.md) |
 | 43 | 环境变量管理 (dotenvy) | [查看](lessons/43-dotenvy.md) |
 | 44 | HTTP 客户端 (reqwest) | [查看](lessons/44-reqwest.md) |
+| 45 | 日期时间处理 (chrono) | [查看](lessons/45-chrono.md) |
 
 ---
 
