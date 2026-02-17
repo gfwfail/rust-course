@@ -80,6 +80,7 @@
 | 课程 | 主题 | 链接 |
 |------|------|------|
 | 37 | Unsafe Rust | [查看](lessons/37-unsafe.md) |
+| 38 | FFI 与 C 语言交互 | [查看](lessons/38-ffi.md) |
 
 ---
 
