@@ -93,6 +93,7 @@
 |------|------|------|
 | 41 | CLI 工具开发 (clap) | [查看](lessons/41-clap.md) |
 | 42 | 配置管理 (config crate) | [查看](lessons/42-config.md) |
+| 43 | 环境变量管理 (dotenvy) | [查看](lessons/43-dotenvy.md) |
 
 ---
 
