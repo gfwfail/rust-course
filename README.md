@@ -86,6 +86,7 @@
 | 课程 | 主题 | 链接 |
 |------|------|------|
 | 39 | Cargo Workspace 工作空间 | [查看](lessons/39-workspace.md) |
+| 40 | Cargo Features 条件编译 | [查看](lessons/40-cargo-features.md) |
 
 ---
 
