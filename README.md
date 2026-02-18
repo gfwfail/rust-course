@@ -100,6 +100,7 @@
 | 47 | 正则表达式 (regex) | [查看](lessons/47-regex.md) |
 | 48 | 全局状态与延迟初始化 (LazyLock) | [查看](lessons/48-lazylock.md) |
 | 49 | 随机数生成 (rand) | [查看](lessons/49-rand.md) |
+| 50 | 密码哈希 (argon2/bcrypt) | [查看](lessons/50-password-hashing.md) |
 
 ---
 
@@ -149,4 +150,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-18*
+*最后更新：2026-02-19*
