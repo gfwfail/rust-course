@@ -99,6 +99,7 @@
 | 46 | UUID 生成 (uuid) | [查看](lessons/46-uuid.md) |
 | 47 | 正则表达式 (regex) | [查看](lessons/47-regex.md) |
 | 48 | 全局状态与延迟初始化 (LazyLock) | [查看](lessons/48-lazylock.md) |
+| 49 | 随机数生成 (rand) | [查看](lessons/49-rand.md) |
 
 ---
 
