@@ -97,6 +97,7 @@
 | 44 | HTTP 客户端 (reqwest) | [查看](lessons/44-reqwest.md) |
 | 45 | 日期时间处理 (chrono) | [查看](lessons/45-chrono.md) |
 | 46 | UUID 生成 (uuid) | [查看](lessons/46-uuid.md) |
+| 47 | 正则表达式 (regex) | [查看](lessons/47-regex.md) |
 
 ---
 
