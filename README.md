@@ -96,6 +96,7 @@
 | 43 | 环境变量管理 (dotenvy) | [查看](lessons/43-dotenvy.md) |
 | 44 | HTTP 客户端 (reqwest) | [查看](lessons/44-reqwest.md) |
 | 45 | 日期时间处理 (chrono) | [查看](lessons/45-chrono.md) |
+| 46 | UUID 生成 (uuid) | [查看](lessons/46-uuid.md) |
 
 ---
 
