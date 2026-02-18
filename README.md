@@ -101,6 +101,7 @@
 | 48 | 全局状态与延迟初始化 (LazyLock) | [查看](lessons/48-lazylock.md) |
 | 49 | 随机数生成 (rand) | [查看](lessons/49-rand.md) |
 | 50 | 密码哈希 (argon2/bcrypt) | [查看](lessons/50-password-hashing.md) |
+| 51 | JWT 认证 (jsonwebtoken) | [查看](lessons/51-jwt.md) |
 
 ---
 
