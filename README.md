@@ -109,6 +109,7 @@
 | 56 | 限流 Rate Limiting | [查看](lessons/56-rate-limiting.md) |
 | 57 | 优雅关闭 Graceful Shutdown | [查看](lessons/57-graceful-shutdown.md) |
 | 58 | OpenAPI 文档生成 (utoipa) | [查看](lessons/58-utoipa.md) |
+| 59 | 后台任务与定时调度 | [查看](lessons/59-background-jobs.md) |
 
 ---
 
