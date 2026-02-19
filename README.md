@@ -108,6 +108,7 @@
 | 55 | WebSocket 实时通信 | [查看](lessons/55-websocket.md) |
 | 56 | 限流 Rate Limiting | [查看](lessons/56-rate-limiting.md) |
 | 57 | 优雅关闭 Graceful Shutdown | [查看](lessons/57-graceful-shutdown.md) |
+| 58 | OpenAPI 文档生成 (utoipa) | [查看](lessons/58-utoipa.md) |
 
 ---
 
@@ -157,4 +158,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-19*
+*最后更新：2026-02-20*
