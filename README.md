@@ -111,6 +111,7 @@
 | 58 | OpenAPI 文档生成 (utoipa) | [查看](lessons/58-utoipa.md) |
 | 59 | 后台任务与定时调度 | [查看](lessons/59-background-jobs.md) |
 | 60 | gRPC 与 tonic | [查看](lessons/60-grpc-tonic.md) |
+| 61 | Prometheus 监控指标 (metrics) | [查看](lessons/61-prometheus-metrics.md) |
 
 ---
 
