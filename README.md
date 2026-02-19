@@ -107,6 +107,7 @@
 | 54 | Redis 集成 (redis) | [查看](lessons/54-redis.md) |
 | 55 | WebSocket 实时通信 | [查看](lessons/55-websocket.md) |
 | 56 | 限流 Rate Limiting | [查看](lessons/56-rate-limiting.md) |
+| 57 | 优雅关闭 Graceful Shutdown | [查看](lessons/57-graceful-shutdown.md) |
 
 ---
 
