@@ -104,6 +104,7 @@
 | 51 | JWT 认证 (jsonwebtoken) | [查看](lessons/51-jwt.md) |
 | 52 | 数据验证 (validator) | [查看](lessons/52-validator.md) |
 | 53 | Tower 中间件 (tower) | [查看](lessons/53-tower.md) |
+| 54 | Redis 集成 (redis) | [查看](lessons/54-redis.md) |
 
 ---
 
