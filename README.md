@@ -120,6 +120,7 @@
 | 课程 | 主题 | 链接 |
 |------|------|------|
 | 65 | 模式匹配深入 | [查看](lessons/65-pattern-matching.md) |
+| 66 | 类型转换 (From/Into/TryFrom/AsRef) | [查看](lessons/66-type-conversions.md) |
 
 ---
 
@@ -169,4 +170,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-20*
+*最后更新：2026-02-21*
