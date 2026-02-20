@@ -121,6 +121,7 @@
 |------|------|------|
 | 65 | 模式匹配深入 | [查看](lessons/65-pattern-matching.md) |
 | 66 | 类型转换 (From/Into/TryFrom/AsRef) | [查看](lessons/66-type-conversions.md) |
+| 67 | Deref 与智能指针的魔法 | [查看](lessons/67-deref-smart-pointers.md) |
 
 ---
 
