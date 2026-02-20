@@ -113,6 +113,7 @@
 | 60 | gRPC 与 tonic | [查看](lessons/60-grpc-tonic.md) |
 | 61 | Prometheus 监控指标 (metrics) | [查看](lessons/61-prometheus-metrics.md) |
 | 62 | 内存缓存 (moka) | [查看](lessons/62-moka.md) |
+| 63 | 文件上传与 Multipart 处理 | [查看](lessons/63-multipart-upload.md) |
 
 ---
 
