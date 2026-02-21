@@ -128,6 +128,7 @@
 | 71 | Cell — 轻量级内部可变性 | [查看](lessons/71-cell.md) |
 | 72 | Cow — 写时克隆的智能指针 | [查看](lessons/72-cow.md) |
 | 73 | PhantomData — 幽灵数据与零大小类型 | [查看](lessons/73-phantomdata.md) |
+| 74 | Pin 与 Unpin — 固定内存位置 | [查看](lessons/74-pin-unpin.md) |
 
 ---
 
