@@ -129,6 +129,7 @@
 | 72 | Cow — 写时克隆的智能指针 | [查看](lessons/72-cow.md) |
 | 73 | PhantomData — 幽灵数据与零大小类型 | [查看](lessons/73-phantomdata.md) |
 | 74 | Pin 与 Unpin — 固定内存位置 | [查看](lessons/74-pin-unpin.md) |
+| 75 | ManuallyDrop — 手动控制析构 | [查看](lessons/75-manually-drop.md) |
 
 ---
 
@@ -178,4 +179,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-21*
+*最后更新：2026-02-22*
