@@ -130,6 +130,7 @@
 | 73 | PhantomData — 幽灵数据与零大小类型 | [查看](lessons/73-phantomdata.md) |
 | 74 | Pin 与 Unpin — 固定内存位置 | [查看](lessons/74-pin-unpin.md) |
 | 75 | ManuallyDrop — 手动控制析构 | [查看](lessons/75-manually-drop.md) |
+| 76 | MaybeUninit — 未初始化内存的安全处理 | [查看](lessons/76-maybeuninit.md) |
 
 ---
 
