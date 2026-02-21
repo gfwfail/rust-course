@@ -125,6 +125,7 @@
 | 68 | Drop trait 与资源管理 | [查看](lessons/68-drop-trait.md) |
 | 69 | Rc 与 Arc — 共享所有权 | [查看](lessons/69-rc-arc.md) |
 | 70 | RefCell 与内部可变性 | [查看](lessons/70-refcell-interior-mutability.md) |
+| 71 | Cell — 轻量级内部可变性 | [查看](lessons/71-cell.md) |
 
 ---
 
