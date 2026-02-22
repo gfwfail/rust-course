@@ -138,6 +138,7 @@
 | 81 | std::cmp — 比较与排序 | [查看](lessons/81-std-cmp.md) |
 | 82 | std::hash — 哈希的艺术 | [查看](lessons/82-std-hash.md) |
 | 83 | std::fmt — 格式化输出 | [查看](lessons/83-std-fmt.md) |
+| 84 | std::iter — 迭代器的力量 | [查看](lessons/84-std-iter.md) |
 
 ---
 
