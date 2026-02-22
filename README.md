@@ -137,6 +137,7 @@
 | 80 | std::ops — 操作符重载 | [查看](lessons/80-std-ops.md) |
 | 81 | std::cmp — 比较与排序 | [查看](lessons/81-std-cmp.md) |
 | 82 | std::hash — 哈希的艺术 | [查看](lessons/82-std-hash.md) |
+| 83 | std::fmt — 格式化输出 | [查看](lessons/83-std-fmt.md) |
 
 ---
 
