@@ -132,6 +132,7 @@
 | 75 | ManuallyDrop — 手动控制析构 | [查看](lessons/75-manually-drop.md) |
 | 76 | MaybeUninit — 未初始化内存的安全处理 | [查看](lessons/76-maybeuninit.md) |
 | 77 | NonNull — 非空裸指针的安全封装 | [查看](lessons/77-nonnull.md) |
+| 78 | UnsafeCell — 内部可变性的基石 | [查看](lessons/78-unsafecell.md) |
 
 ---
 
