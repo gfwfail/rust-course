@@ -136,6 +136,7 @@
 | 79 | std::mem — 内存操作工具箱 | [查看](lessons/79-std-mem.md) |
 | 80 | std::ops — 操作符重载 | [查看](lessons/80-std-ops.md) |
 | 81 | std::cmp — 比较与排序 | [查看](lessons/81-std-cmp.md) |
+| 82 | std::hash — 哈希的艺术 | [查看](lessons/82-std-hash.md) |
 
 ---
 
@@ -185,4 +186,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-22*
+*最后更新：2026-02-23*
