@@ -141,6 +141,7 @@
 | 84 | std::iter — 迭代器的力量 | [查看](lessons/84-std-iter.md) |
 | 85 | std::borrow — Borrow 和 ToOwned | [查看](lessons/85-std-borrow.md) |
 | 86 | std::default — Default trait 与默认值 | [查看](lessons/86-std-default.md) |
+| 87 | std::clone — 克隆与复制的艺术 | [查看](lessons/87-std-clone.md) |
 
 ---
 
