@@ -147,6 +147,7 @@
 | 90 | std::io — 输入输出的艺术 | [查看](lessons/90-std-io.md) |
 | 91 | std::fs — 文件系统操作 | [查看](lessons/91-std-fs.md) |
 | 92 | std::path — 路径操作的艺术 | [查看](lessons/92-std-path.md) |
+| 93 | std::env — 环境变量与命令行参数 | [查看](lessons/93-std-env.md) |
 
 ---
 
