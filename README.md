@@ -146,6 +146,7 @@
 | 89 | std::any — 运行时类型信息 (RTTI) | [查看](lessons/89-std-any.md) |
 | 90 | std::io — 输入输出的艺术 | [查看](lessons/90-std-io.md) |
 | 91 | std::fs — 文件系统操作 | [查看](lessons/91-std-fs.md) |
+| 92 | std::path — 路径操作的艺术 | [查看](lessons/92-std-path.md) |
 
 ---
 
