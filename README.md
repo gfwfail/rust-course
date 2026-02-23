@@ -144,6 +144,7 @@
 | 87 | std::clone — 克隆与复制的艺术 | [查看](lessons/87-std-clone.md) |
 | 88 | std::marker — Marker Traits 的奥秘 | [查看](lessons/88-std-marker.md) |
 | 89 | std::any — 运行时类型信息 (RTTI) | [查看](lessons/89-std-any.md) |
+| 90 | std::io — 输入输出的艺术 | [查看](lessons/90-std-io.md) |
 
 ---
 
@@ -193,4 +194,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-23*
+*最后更新：2026-02-24*
