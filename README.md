@@ -153,6 +153,7 @@
 | 96 | std::time — 时间与持续时间 | [查看](lessons/96-std-time.md) |
 | 97 | std::thread — 多线程编程基础 | [查看](lessons/97-std-thread.md) |
 | 98 | std::sync — 同步原语 | [查看](lessons/98-std-sync.md) |
+| 99 | std::collections — 标准库集合类型全览 | [查看](lessons/99-std-collections.md) |
 
 ---
 
