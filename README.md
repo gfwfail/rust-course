@@ -150,6 +150,7 @@
 | 93 | std::env — 环境变量与命令行参数 | [查看](lessons/93-std-env.md) |
 | 94 | std::process — 进程控制与子进程 | [查看](lessons/94-std-process.md) |
 | 95 | std::net — 网络编程基础 | [查看](lessons/95-std-net.md) |
+| 96 | std::time — 时间与持续时间 | [查看](lessons/96-std-time.md) |
 
 ---
 
