@@ -151,6 +151,7 @@
 | 94 | std::process — 进程控制与子进程 | [查看](lessons/94-std-process.md) |
 | 95 | std::net — 网络编程基础 | [查看](lessons/95-std-net.md) |
 | 96 | std::time — 时间与持续时间 | [查看](lessons/96-std-time.md) |
+| 97 | std::thread — 多线程编程基础 | [查看](lessons/97-std-thread.md) |
 
 ---
 
