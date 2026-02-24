@@ -152,6 +152,7 @@
 | 95 | std::net — 网络编程基础 | [查看](lessons/95-std-net.md) |
 | 96 | std::time — 时间与持续时间 | [查看](lessons/96-std-time.md) |
 | 97 | std::thread — 多线程编程基础 | [查看](lessons/97-std-thread.md) |
+| 98 | std::sync — 同步原语 | [查看](lessons/98-std-sync.md) |
 
 ---
 
@@ -201,4 +202,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-24*
+*最后更新：2026-02-25*
