@@ -156,6 +156,7 @@
 | 99 | std::collections — 标准库集合类型全览 | [查看](lessons/99-std-collections.md) |
 | 100 | 🎉 std::cell — 内部可变性 | [查看](lessons/100-std-cell.md) |
 | 101 | std::error — 错误处理的艺术 | [查看](lessons/101-std-error.md) |
+| 102 | std::panic — Panic 处理机制 | [查看](lessons/102-std-panic.md) |
 
 ---
 
