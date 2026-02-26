@@ -156,6 +156,9 @@
 | 99 | std::collections — 标准库集合类型全览 | [查看](lessons/99-std-collections.md) |
 | 100 | 🎉 模式匹配进阶 — Rust 最强大的武器 | [查看](lessons/100-pattern-matching-advanced.md) |
 | 101 | std::error — Error trait 与错误链 | [查看](lessons/101-std-error.md) |
+| 102 | std::panic — Panic 与恐慌处理 | [查看](lessons/102-std-panic.md) |
+| 103 | std::result — Result 组合子方法大全 | [查看](lessons/103-std-result.md) |
+| 104 | std::option — Option 组合子方法大全 | [查看](lessons/104-std-option.md) |
 
 ---
 
