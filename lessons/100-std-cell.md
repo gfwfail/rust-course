@@ -1,158 +1,159 @@
-# 🎉 第 100 课：std::cell — 内部可变性
+# 第 100 课：std::cell — 内部可变性
 
-恭喜！我们迎来了第 100 课！今天讲一个 Rust 独有且非常重要的概念：**内部可变性 (Interior Mutability)**。
+🎉 里程碑课程！今天讲一个 Rust 独特且重要的概念：**内部可变性 (Interior Mutability)**。
 
 ---
 
-## 🤔 问题：借用规则太严格了？
+## 🤔 问题：借用规则的困境
 
 Rust 的借用规则：
-- 要么一个可变引用
-- 要么多个不可变引用
-- 不能同时存在
+- 要么有多个不可变引用 `&T`
+- 要么有一个可变引用 `&mut T`
+- 两者不能同时存在
 
-但有时候我们需要在**只持有不可变引用**的情况下**修改数据**：
+但有时我们需要在只有 `&self` 的情况下修改数据：
 
 ```rust
-// ❌ 编译错误！
 struct Counter {
-    count: i32,
+    value: i32,
 }
 
 impl Counter {
-    fn increment(&self) {  // 注意是 &self
-        self.count += 1;   // 错误：不能修改 &self
+    // ❌ 这个方法需要 &mut self
+    fn increment(&mut self) {
+        self.value += 1;
     }
 }
+
+// 问题：如果 Counter 在 Rc 里呢？
+use std::rc::Rc;
+let counter = Rc::new(Counter { value: 0 });
+// counter.increment(); // ❌ Rc 只能给你 &T，不能给 &mut T！
 ```
 
-这在以下场景很常见：
-- 缓存/记忆化
-- 统计调用次数
-- 观察者模式
-- 共享状态
+这就是内部可变性要解决的问题。
 
 ---
 
-## 📦 Cell — 简单值的内部可变性
-
-`Cell<T>` 允许在不可变引用下修改值，但只能整体替换：
+## 📦 Cell<T> — 简单值的内部可变性
 
 ```rust
 use std::cell::Cell;
 
 struct Counter {
-    count: Cell<i32>,  // 用 Cell 包装
+    value: Cell<i32>,  // 用 Cell 包装
 }
 
 impl Counter {
     fn new() -> Self {
-        Counter { count: Cell::new(0) }
+        Counter { value: Cell::new(0) }
     }
     
-    fn increment(&self) {  // &self，不是 &mut self
-        let old = self.count.get();
-        self.count.set(old + 1);
+    // 现在只需要 &self！
+    fn increment(&self) {
+        let current = self.value.get();
+        self.value.set(current + 1);
     }
     
     fn get(&self) -> i32 {
-        self.count.get()
+        self.value.get()
     }
 }
 
 fn main() {
-    let counter = Counter::new();  // 不需要 mut
-    counter.increment();
+    let counter = Counter::new();
+    counter.increment();  // 用 &self 就能修改
     counter.increment();
     println!("Count: {}", counter.get());  // 2
 }
 ```
 
-### Cell 的核心方法
+### Cell 的特点
 
 ```rust
 use std::cell::Cell;
 
-let cell = Cell::new(5);
+let cell = Cell::new(42);
 
-// get — 获取值（Copy 类型）
-let val = cell.get();  // 5
+// get() — 获取值的拷贝
+let value = cell.get();  // 42
 
-// set — 设置新值
-cell.set(10);
+// set() — 设置新值
+cell.set(100);
 
-// replace — 设置新值，返回旧值
-let old = cell.replace(20);  // old = 10
+// take() — 取出值，留下默认值
+let cell = Cell::new(String::from("hello"));  // ❌ String 没有 Copy！
+// cell.get(); // 编译错误！
 
-// take — 取出值，留下默认值
-let cell = Cell::new(String::from("hello"));
-// cell.get();  // ❌ 错误！String 不是 Copy
-let val = cell.take();  // val = "hello", cell 变成 ""
+// Cell<T> 的 get() 只有 T: Copy 时才能用
+// 因为它返回的是值的拷贝
 ```
 
-### ⚠️ Cell 的限制
+**Cell 限制**：只适合 `Copy` 类型（数字、bool 等）
+
+---
+
+## 🔓 RefCell<T> — 任意类型的内部可变性
 
 ```rust
-// Cell<T> 的 get() 要求 T: Copy
-let cell = Cell::new(vec![1, 2, 3]);
-// cell.get();  // ❌ Vec 不是 Copy！
+use std::cell::RefCell;
 
-// 只能整体替换，不能获取内部引用
-let cell = Cell::new(5);
-// let r = &cell.???  // ❌ 没有办法获取内部 &i32
+let cell = RefCell::new(String::from("hello"));
+
+// borrow() — 获取不可变借用 Ref<T>
+{
+    let s = cell.borrow();
+    println!("{}", s);  // "hello"
+}  // Ref 离开作用域，借用结束
+
+// borrow_mut() — 获取可变借用 RefMut<T>
+{
+    let mut s = cell.borrow_mut();
+    s.push_str(" world");
+}  // RefMut 离开作用域，借用结束
+
+println!("{:?}", cell);  // RefCell { value: "hello world" }
+```
+
+### RefCell 的运行时检查
+
+```rust
+use std::cell::RefCell;
+
+let cell = RefCell::new(5);
+
+// 借用规则在运行时检查！
+let borrow1 = cell.borrow();
+let borrow2 = cell.borrow();  // ✅ 多个不可变借用 OK
+
+// let mut_borrow = cell.borrow_mut();  // ❌ panic! 已有不可变借用
+
+drop(borrow1);
+drop(borrow2);
+
+let mut_borrow = cell.borrow_mut();  // ✅ 现在可以了
+```
+
+**⚠️ RefCell 会在违反借用规则时 panic！**
+
+```rust
+let cell = RefCell::new(5);
+let r1 = cell.borrow_mut();
+let r2 = cell.borrow_mut();  // 💥 panic: already borrowed
 ```
 
 ---
 
-## 📦 RefCell — 运行时借用检查
-
-`RefCell<T>` 把借用检查从编译期推迟到运行时：
+## 🛡️ try_borrow — 安全版本
 
 ```rust
 use std::cell::RefCell;
 
-let data = RefCell::new(vec![1, 2, 3]);
-
-// borrow() — 不可变借用
-{
-    let r = data.borrow();  // 返回 Ref<Vec<i32>>
-    println!("{:?}", *r);   // [1, 2, 3]
-}  // Ref 离开作用域，借用结束
-
-// borrow_mut() — 可变借用
-{
-    let mut r = data.borrow_mut();  // 返回 RefMut<Vec<i32>>
-    r.push(4);
-}
-
-println!("{:?}", data.borrow());  // [1, 2, 3, 4]
-```
-
-### ⚠️ 运行时 panic！
-
-```rust
-use std::cell::RefCell;
-
-let data = RefCell::new(5);
-
-let r1 = data.borrow();      // 不可变借用
-let r2 = data.borrow_mut();  // 💥 panic! 已经有不可变借用
-
-// 运行时错误：
-// thread 'main' panicked at 'already borrowed: BorrowMutError'
-```
-
-### 安全的尝试借用
-
-```rust
-use std::cell::RefCell;
-
-let data = RefCell::new(5);
-
-let r1 = data.borrow();
+let cell = RefCell::new(5);
+let r1 = cell.borrow_mut();
 
 // try_borrow_mut 返回 Result，不会 panic
-match data.try_borrow_mut() {
+match cell.try_borrow_mut() {
     Ok(mut r) => *r += 1,
     Err(_) => println!("借用冲突！"),
 }
@@ -160,149 +161,148 @@ match data.try_borrow_mut() {
 
 ---
 
-## 🆚 Cell vs RefCell
+## 🔗 Rc + RefCell = 共享可变数据
 
-| 特性 | Cell<T> | RefCell<T> |
-|------|---------|------------|
-| 获取引用 | ❌ 只能 get/set | ✅ borrow/borrow_mut |
-| 适用类型 | Copy 类型或 take | 任何类型 |
-| 检查时机 | 无需检查 | 运行时 |
-| panic 风险 | 无 | 有（借用冲突） |
-| 开销 | 零 | 小（借用计数） |
-
-**选择原则**：
-- 简单的 `Copy` 类型 → `Cell`
-- 需要引用内部数据 → `RefCell`
-
----
-
-## 🧩 实战：缓存计算结果
+这是 Rust 中实现"多个所有者 + 可修改"的经典组合：
 
 ```rust
+use std::rc::Rc;
 use std::cell::RefCell;
 
-struct LazyValue {
-    value: RefCell<Option<i32>>,
-    computation: fn() -> i32,
-}
-
-impl LazyValue {
-    fn new(computation: fn() -> i32) -> Self {
-        LazyValue {
-            value: RefCell::new(None),
-            computation,
-        }
-    }
-    
-    fn get(&self) -> i32 {  // 只需要 &self
-        // 如果已缓存，直接返回
-        if let Some(v) = *self.value.borrow() {
-            return v;
-        }
-        
-        // 否则计算并缓存
-        let v = (self.computation)();
-        *self.value.borrow_mut() = Some(v);
-        v
-    }
-}
-
-fn expensive() -> i32 {
-    println!("Computing...");
-    42
+#[derive(Debug)]
+struct Node {
+    value: i32,
+    children: RefCell<Vec<Rc<Node>>>,
 }
 
 fn main() {
-    let lazy = LazyValue::new(expensive);
+    let leaf = Rc::new(Node {
+        value: 3,
+        children: RefCell::new(vec![]),
+    });
     
-    println!("{}", lazy.get());  // 打印 "Computing...", 返回 42
-    println!("{}", lazy.get());  // 直接返回 42，不再计算
+    let branch = Rc::new(Node {
+        value: 5,
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
+    
+    // 通过 &branch 也能修改 children！
+    branch.children.borrow_mut().push(Rc::new(Node {
+        value: 7,
+        children: RefCell::new(vec![]),
+    }));
+    
+    println!("{:?}", branch);
+}
+```
+
+### 实际例子：共享缓存
+
+```rust
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
+
+struct Cache {
+    data: RefCell<HashMap<String, String>>,
+}
+
+impl Cache {
+    fn new() -> Rc<Self> {
+        Rc::new(Cache {
+            data: RefCell::new(HashMap::new()),
+        })
+    }
+    
+    fn get(&self, key: &str) -> Option<String> {
+        self.data.borrow().get(key).cloned()
+    }
+    
+    fn set(&self, key: String, value: String) {
+        self.data.borrow_mut().insert(key, value);
+    }
+}
+
+fn main() {
+    let cache = Cache::new();
+    let cache2 = Rc::clone(&cache);
+    
+    cache.set("name".into(), "Rust".into());
+    println!("{:?}", cache2.get("name"));  // Some("Rust")
 }
 ```
 
 ---
 
-## 🔄 OnceCell — 只写一次
+## 📊 Cell vs RefCell
+
+| 特性 | Cell<T> | RefCell<T> |
+|------|----------|-------------|
+| T 的要求 | 通常 T: Copy | 任意类型 |
+| 访问方式 | get/set（拷贝） | borrow/borrow_mut（引用） |
+| 开销 | 零开销 | 运行时借用检查 |
+| 失败处理 | 编译时 | 运行时 panic |
+
+**选择原则**：
+- 简单 Copy 类型 → `Cell`
+- 复杂类型 → `RefCell`
+
+---
+
+## ⚡ OnceCell — 一次性初始化
 
 ```rust
 use std::cell::OnceCell;
 
-let cell = OnceCell::new();
-
-// 第一次设置成功
-assert!(cell.set(1).is_ok());
-
-// 第二次设置失败（值不变）
-assert!(cell.set(2).is_err());
-
-println!("{:?}", cell.get());  // Some(1)
-
-// get_or_init — 惰性初始化
 let cell: OnceCell<String> = OnceCell::new();
+
+// 只能设置一次
+assert!(cell.set("hello".into()).is_ok());
+assert!(cell.set("world".into()).is_err());  // 第二次失败
+
+// get 返回 Option<&T>
+println!("{:?}", cell.get());  // Some("hello")
+
+// get_or_init — 懒初始化
+let cell: OnceCell<i32> = OnceCell::new();
 let value = cell.get_or_init(|| {
-    println!("初始化中...");
-    "hello".to_string()
+    println!("计算中...");
+    42
 });
-// 第二次调用不会再执行闭包
-let value2 = cell.get_or_init(|| unreachable!());
+println!("{}", value);  // 42
+
+// 第二次调用不会重新计算
+let value = cell.get_or_init(|| 100);
+println!("{}", value);  // 还是 42
 ```
 
 ---
 
-## 💡 与 PHP/JS 的类比
+## 🧵 多线程版本
 
-```php
-// PHP：对象默认可变
-class Counter {
-    private int $count = 0;
-    
-    public function increment(): void {
-        $this->count++;  // 无需 mut，随便改
-    }
-}
-```
+单线程用 `Cell`/`RefCell`，多线程用：
+- `Cell` → `AtomicXxx` (如 `AtomicI32`)
+- `RefCell` → `Mutex` 或 `RwLock`
+- `OnceCell` → `OnceLock`
 
 ```rust
-// Rust：必须显式声明可变性
-// Cell/RefCell 让你在不可变借用下实现可变
-
-// 这是 Rust 的哲学：
-// "可变性是危险的，必须显式声明"
-// Cell/RefCell 是安全的逃生通道
-```
-
----
-
-## ⚠️ 重要提醒
-
-1. **Cell 和 RefCell 都是单线程的！** 不能跨线程使用
-2. 多线程需要用 `Mutex` / `RwLock`（后面会讲）
-3. RefCell 的借用冲突是**运行时 panic**，要小心
-
-```rust
+// 单线程
 use std::cell::RefCell;
+let data = RefCell::new(vec![1, 2, 3]);
 
-// ❌ 不能跨线程！
-let data = RefCell::new(5);
-// std::thread::spawn(move || {
-//     data.borrow_mut();  // 编译错误！RefCell 不是 Sync
-// });
+// 多线程
+use std::sync::Mutex;
+let data = Mutex::new(vec![1, 2, 3]);
 ```
 
 ---
 
 ## 🎓 课后思考
 
-1. 为什么 `Cell<T>` 的 `get()` 要求 `T: Copy`？
-2. 什么情况下应该用 `RefCell` 而不是直接用 `&mut`？
-3. `OnceCell` 和 `lazy_static!` 宏有什么区别？
+1. 为什么 `Cell` 和 `RefCell` 不能跨线程使用？
+2. 在什么场景下 `RefCell` 的运行时检查会 panic？如何避免？
+3. `Rc<RefCell<T>>` 这个组合为什么这么常见？
 
 ---
 
-🎉 **里程碑达成！** 我们已经完成了 100 节 Rust 课程！
-
-感谢大家一路陪伴，后面还有更多精彩内容！
-
----
-
-*第 100 课完* 🦀
+*🎉 恭喜完成第 100 课！我们已经系统学习了 Rust 语言和标准库的核心内容。继续加油！*
