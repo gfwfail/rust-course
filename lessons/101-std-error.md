@@ -1,16 +1,15 @@
-# 第 101 课：std::error — 错误处理的艺术
+# 第 101 课：std::error — Error trait 与错误链
 
-> 日期：2026-02-26  
-> 主题：std::error 模块与 Error trait
+今天深入标准库的 **Error trait**——Rust 错误处理的基石。
 
 ---
 
-## 为什么需要 std::error？
+## 🎯 为什么要讲 Error trait？
 
-Rust 的错误处理基于 `Result<T, E>`，但标准库提供了 `std::error::Error` trait 来统一错误类型的行为，让不同类型的错误可以互操作。
+之前用过 `anyhow` 和 `thiserror`，但它们都基于标准库的 `std::error::Error`。理解底层，才能用好上层。
 
 ```rust
-// Error trait 的定义（简化版）
+// 标准库定义（简化版）
 pub trait Error: Debug + Display {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         None
@@ -18,14 +17,14 @@ pub trait Error: Debug + Display {
 }
 ```
 
-三个关键点：
-1. 必须实现 `Debug`（调试输出）
-2. 必须实现 `Display`（用户友好的输出）
-3. 可选实现 `source()`（错误链追踪）
+核心三点：
+1. 必须实现 `Debug`（给开发者看）
+2. 必须实现 `Display`（给用户看）
+3. 可选实现 `source()`（错误链）
 
 ---
 
-## 自定义错误类型
+## 📦 手写一个标准错误类型
 
 ```rust
 use std::error::Error;
@@ -34,7 +33,7 @@ use std::fmt;
 #[derive(Debug)]
 struct MyError {
     message: String,
-    source: Option<Box<dyn Error + 'static>>,
+    source: Option<Box<dyn Error + Send + Sync>>,
 }
 
 impl fmt::Display for MyError {
@@ -45,188 +44,224 @@ impl fmt::Display for MyError {
 
 impl Error for MyError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
-        self.source.as_ref().map(|e| e.as_ref())
+        self.source.as_ref()
+            .map(|e| e.as_ref() as &(dyn Error + 'static))
     }
+}
+
+// 使用
+fn might_fail() -> Result<(), MyError> {
+    Err(MyError {
+        message: "操作失败".into(),
+        source: None,
+    })
 }
 ```
 
 ---
 
-## 错误链（Error Chain）
+## 🔗 source() — 错误链的魔法
 
-`source()` 方法让你可以追踪错误的根因：
+错误链让你追溯"错误的错误"：
 
 ```rust
-fn print_error_chain(err: &dyn Error) {
-    println!("Error: {}", err);
-    
-    let mut source = err.source();
-    while let Some(cause) = source {
-        println!("Caused by: {}", cause);
-        source = cause.source();
+use std::fs::File;
+use std::io;
+
+#[derive(Debug)]
+struct ConfigError {
+    path: String,
+    source: io::Error,
+}
+
+impl fmt::Display for ConfigError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "无法加载配置文件: {}", self.path)
     }
 }
 
-// 输出示例：
-// Error: 无法读取配置文件
-// Caused by: 文件不存在
-// Caused by: No such file or directory (os error 2)
+impl Error for ConfigError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        Some(&self.source)  // 暴露底层 io::Error
+    }
+}
+
+fn load_config(path: &str) -> Result<String, ConfigError> {
+    std::fs::read_to_string(path).map_err(|e| ConfigError {
+        path: path.to_string(),
+        source: e,
+    })
+}
+
+// 遍历错误链
+fn print_error_chain(err: &dyn Error) {
+    println!("Error: {}", err);
+    let mut current = err.source();
+    while let Some(cause) = current {
+        println!("Caused by: {}", cause);
+        current = cause.source();
+    }
+}
+```
+
+输出：
+```
+Error: 无法加载配置文件: /etc/app.conf
+Caused by: No such file or directory (os error 2)
 ```
 
 ---
 
-## Box<dyn Error> 作为通用错误类型
+## 📦 Box<dyn Error> — 类型擦除的错误
+
+当你不关心具体错误类型时：
 
 ```rust
 use std::error::Error;
 
-// 可以返回任何实现了 Error 的类型
+// 返回任意错误
 fn do_something() -> Result<(), Box<dyn Error>> {
-    let _file = std::fs::read_to_string("config.txt")?;
-    let _num: i32 = "not a number".parse()?;
+    let _file = std::fs::File::open("不存在.txt")?;
+    let _num: i32 = "abc".parse()?;  // 不同类型的错误！
     Ok(())
 }
 
-fn main() {
-    if let Err(e) = do_something() {
-        print_error_chain(e.as_ref());
-    }
+// 线程安全版本
+fn do_something_threadsafe() -> Result<(), Box<dyn Error + Send + Sync>> {
+    // 可以跨线程传递错误
+    Ok(())
 }
 ```
 
-**优点**：简单、灵活  
-**缺点**：堆分配、无法精确匹配错误类型
-
----
-
-## 对比 PHP/Laravel
-
+**对比 PHP/Laravel：**
 ```php
-// PHP 的异常链
+// PHP 只能 catch 一个基类
 try {
-    throw new Exception("底层错误");
+    // ...
 } catch (Exception $e) {
-    throw new Exception("上层错误", 0, $e);
-}
-
-// 获取原因
-$previous = $exception->getPrevious();
-```
-
-Rust 用 `source()` 实现类似功能，但：
-- 不用异常机制（无运行时开销）
-- 编译期强制处理
-- 错误链是可选的
-
----
-
-## 标准库中实现 Error 的类型
-
-```rust
-// 常见错误类型
-std::io::Error          // IO 错误
-std::num::ParseIntError // 数字解析错误
-std::str::Utf8Error     // UTF-8 解码错误
-std::fmt::Error         // 格式化错误
-std::env::VarError      // 环境变量错误
-
-// 检查类型
-fn handle_error(err: &dyn Error) {
-    if let Some(io_err) = err.downcast_ref::<std::io::Error>() {
-        println!("IO error: {:?}", io_err.kind());
-    }
+    // 所有异常都变成 Exception
 }
 ```
 
+Rust 的 `Box<dyn Error>` 保留了错误链信息，比 PHP 更强大。
+
 ---
 
-## downcast：向下转型
+## 🔍 downcast — 恢复具体类型
+
+有时需要知道具体是什么错误：
 
 ```rust
 use std::error::Error;
+use std::io;
 
-fn try_recover(err: Box<dyn Error>) {
+fn handle_error(err: Box<dyn Error>) {
     // 尝试转换为具体类型
-    if let Some(io_err) = err.downcast_ref::<std::io::Error>() {
+    if let Some(io_err) = err.downcast_ref::<io::Error>() {
         match io_err.kind() {
-            std::io::ErrorKind::NotFound => {
-                println!("文件不存在，创建默认配置...");
-            }
-            _ => println!("其他 IO 错误"),
+            io::ErrorKind::NotFound => println!("文件不存在"),
+            io::ErrorKind::PermissionDenied => println!("权限不足"),
+            _ => println!("IO 错误: {}", io_err),
         }
+    } else {
+        println!("其他错误: {}", err);
     }
 }
+
+// downcast 系列方法
+// downcast_ref::<T>() -> Option<&T>      // 借用
+// downcast_mut::<T>() -> Option<&mut T>  // 可变借用
+// downcast::<T>() -> Result<Box<T>, Self> // 消耗所有权
 ```
 
 ---
 
-## 实战：优雅的错误处理模式
+## 🆕 Rust 1.65+：provide() 和 request()
+
+新版 Rust 引入了更灵活的错误上下文（还在 nightly）：
 
 ```rust
+#![feature(error_generic_member_access)]
+
 use std::error::Error;
-use std::fmt;
+use std::backtrace::Backtrace;
 
-// 1. 定义错误枚举
 #[derive(Debug)]
-enum AppError {
-    Config(String),
-    Database(String),
-    Network { url: String, source: Box<dyn Error> },
+struct MyError {
+    message: String,
+    backtrace: Backtrace,
 }
 
-// 2. 实现 Display
-impl fmt::Display for AppError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            AppError::Config(msg) => write!(f, "配置错误: {}", msg),
-            AppError::Database(msg) => write!(f, "数据库错误: {}", msg),
-            AppError::Network { url, .. } => {
-                write!(f, "网络错误: 无法连接 {}", url)
-            }
-        }
+impl Error for MyError {
+    fn provide<'a>(&'a self, request: &mut std::error::Request<'a>) {
+        request.provide_ref::<Backtrace>(&self.backtrace);
     }
 }
 
-// 3. 实现 Error
-impl Error for AppError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            AppError::Network { source, .. } => Some(source.as_ref()),
-            _ => None,
-        }
-    }
-}
-
-// 4. 实现 From 转换
-impl From<std::io::Error> for AppError {
-    fn from(err: std::io::Error) -> Self {
-        AppError::Config(err.to_string())
-    }
+// 获取 backtrace（如果有）
+fn get_backtrace(err: &dyn Error) -> Option<&Backtrace> {
+    err.request_ref::<Backtrace>()
 }
 ```
 
 ---
 
-## 小结
+## 💡 实战对比：手写 vs thiserror
 
-| 概念 | 说明 |
+**手写：**
+```rust
+#[derive(Debug)]
+struct ParseConfigError {
+    line: usize,
+    source: std::num::ParseIntError,
+}
+
+impl fmt::Display for ParseConfigError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "配置解析失败，第 {} 行", self.line)
+    }
+}
+
+impl Error for ParseConfigError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        Some(&self.source)
+    }
+}
+```
+
+**用 thiserror：**
+```rust
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+#[error("配置解析失败，第 {line} 行")]
+struct ParseConfigError {
+    line: usize,
+    #[source]
+    source: std::num::ParseIntError,
+}
+```
+
+thiserror 自动实现 `Display` 和 `Error`，省了 20 行代码！
+
+---
+
+## 🧠 核心要点
+
+| 特性 | 说明 |
 |------|------|
-| `Error` trait | 统一错误接口 |
-| `source()` | 错误链追踪 |
-| `Box<dyn Error>` | 通用错误类型 |
-| `downcast_ref()` | 向下转型匹配 |
-
-**经验法则**：
-- 库代码：定义自己的错误枚举
-- 应用代码：用 `Box<dyn Error>` 或 `anyhow`
-- 总是实现 `Display` 给用户看
+| `Debug + Display` | Error trait 的基础要求 |
+| `source()` | 返回导致当前错误的底层错误 |
+| `Box<dyn Error>` | 类型擦除，接受任何错误 |
+| `downcast_ref::<T>()` | 恢复具体错误类型 |
+| `+ Send + Sync` | 线程安全的错误 |
 
 ---
 
-## 下节预告
+## 📝 小练习
 
-下节课：`std::convert` — 类型转换的系统化方法
+写一个 `HttpError`，包含状态码和可选的底层 `io::Error`，实现完整的 Error trait。
 
 ---
 
-*笔记整理：性奴001*
+*日期：2026-02-27*
