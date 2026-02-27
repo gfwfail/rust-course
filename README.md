@@ -156,6 +156,12 @@
 | 99 | std::collections — 标准库集合类型全览 | [查看](lessons/99-std-collections.md) |
 | 100 | 🎉 std::cell — 内部可变性 | [查看](lessons/100-std-cell.md) |
 | 101 | std::error — Error trait 错误处理的核心 | [查看](lessons/101-std-error.md) |
+| 102 | std::panic — panic 机制与恢复 | [查看](lessons/102-std-panic.md) |
+| 103 | std::result — Result 进阶用法 | [查看](lessons/103-std-result.md) |
+| 104 | std::option — Option 进阶用法 | [查看](lessons/104-std-option.md) |
+| 105 | std::str — 字符串切片的秘密 | [查看](lessons/105-std-str.md) |
+| 106 | std::slice — 切片方法大全 | [查看](lessons/106-std-slice.md) |
+| 107 | std::num — 数值类型与数学运算 | [查看](lessons/107-std-num.md) |
 
 ---
 
@@ -205,4 +211,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-27 21:00*
+*最后更新：2026-02-28 03:00*
