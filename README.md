@@ -154,15 +154,7 @@
 | 97 | std::thread — 多线程编程基础 | [查看](lessons/97-std-thread.md) |
 | 98 | std::sync — 同步原语 | [查看](lessons/98-std-sync.md) |
 | 99 | std::collections — 标准库集合类型全览 | [查看](lessons/99-std-collections.md) |
-| 100 | 🎉 std::cell — 内部可变性 | [查看](lessons/100-std-cell.md) |
-| 101 | std::error — Error trait 错误处理的核心 | [查看](lessons/101-std-error.md) |
-| 102 | std::panic — panic 机制与恢复 | [查看](lessons/102-std-panic.md) |
-| 103 | std::result — Result 进阶用法 | [查看](lessons/103-std-result.md) |
-| 104 | std::option — Option 进阶用法 | [查看](lessons/104-std-option.md) |
-| 105 | std::str — 字符串切片的秘密 | [查看](lessons/105-std-str.md) |
-| 106 | std::slice — 切片方法大全 | [查看](lessons/106-std-slice.md) |
-| 107 | std::num — 数值类型与数学运算 | [查看](lessons/107-std-num.md) |
-| 108 | std::char — Unicode 字符的秘密 | [查看](lessons/108-std-char.md) |
+| 100 | 🎉 Unsafe Rust — 突破安全边界 | [查看](lessons/100-unsafe-rust.md) |
 
 ---
 
