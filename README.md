@@ -159,6 +159,7 @@
 | 102 | std::panic — Panic 与恐慌处理 | [查看](lessons/102-std-panic.md) |
 | 103 | std::result — Result 组合子方法大全 | [查看](lessons/103-std-result.md) |
 | 104 | std::option — Option 组合子方法大全 | [查看](lessons/104-std-option.md) |
+| 105 | std::str — 字符串切片方法大全 | [查看](lessons/105-std-str.md) |
 
 ---
 
@@ -208,4 +209,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-27 06:00*
+*最后更新：2026-02-27 12:00*
