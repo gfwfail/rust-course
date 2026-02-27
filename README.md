@@ -160,6 +160,7 @@
 | 103 | std::result — Result 组合子方法大全 | [查看](lessons/103-std-result.md) |
 | 104 | std::option — Option 组合子方法大全 | [查看](lessons/104-std-option.md) |
 | 105 | std::str — 字符串切片方法大全 | [查看](lessons/105-std-str.md) |
+| 106 | std::slice — 切片方法大全 | [查看](lessons/106-std-slice.md) |
 
 ---
 
