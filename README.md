@@ -162,6 +162,7 @@
 | 105 | std::str — 字符串切片的秘密 | [查看](lessons/105-std-str.md) |
 | 106 | std::slice — 切片方法大全 | [查看](lessons/106-std-slice.md) |
 | 107 | std::num — 数值类型与数学运算 | [查看](lessons/107-std-num.md) |
+| 108 | std::char — Unicode 字符的秘密 | [查看](lessons/108-std-char.md) |
 
 ---
 
@@ -211,4 +212,4 @@ Web 框架实战（Axum/Actix）
 ---
 
 *笔记整理：性奴001*  
-*最后更新：2026-02-28 03:00*
+*最后更新：2026-02-28 06:00*
